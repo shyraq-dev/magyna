@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700&display=swap');
+
+@font-face {
+  font-family: 'Fraunces';
+  src: local('Fraunces');
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-night-950 text-parchment-100 font-body antialiased;
+  background-image: theme('backgroundImage.ornament');
+}
+
+::selection {
+  background: theme('colors.ember.500');
+  color: theme('colors.night.950');
+}
+
+/* Оқу режимі — жеке фон түстері */
+.reader-sepia {
+  background-color: #ece0c8;
+  color: #2b2417;
+}
+.reader-light {
+  background-color: #f8f6f1;
+  color: #1c1c1c;
+}
+.reader-dark {
+  background-color: #0e0e16;
+  color: #ece6d8;
+}
+
+.prose-reader {
+  font-family: theme('fontFamily.read');
+  line-height: 1.85;
+}
+
+.focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-ember-400 focus-visible:ring-offset-2 focus-visible:ring-offset-night-950;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

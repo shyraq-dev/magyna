@@ -1,0 +1,10 @@
+{
+  "name": "Maǵyna",
+  "short_name": "Maǵyna",
+  "description": "Кітаптар мен оқиғаларды оқуға, жазуға және бөлісуге арналған платформа",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0e16",
+  "theme_color": "#0e0e16",
+  "icons": []
+}

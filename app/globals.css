@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-paper text-ink font-body antialiased;
+    background-image: var(--paper-grain);
+    background-size: 22px 22px, 34px 34px;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-normal;
+  }
+  ::selection {
+    @apply bg-gold-300/60;
+  }
+  :focus-visible {
+    outline: 2px solid #A97D34;
+    outline-offset: 2px;
+  }
+  a, button {
+    transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease,
+      box-shadow 200ms ease, transform 200ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+:root {
+  /* Faint paper grain — a book app on a dead-flat background reads as a
+     mockup, not a place to read. Two overlaid radial dot fields, barely
+     visible, break that up without adding visual noise. */
+  --paper-grain: radial-gradient(circle at 1px 1px, rgba(20, 24, 43, 0.035) 1px, transparent 0),
+    radial-gradient(circle at 11px 11px, rgba(20, 24, 43, 0.025) 1px, transparent 0);
+
+  /* Warm-tinted shadows (ink-based, not generic gray) at two depths. */
+  --shadow-sm: 0 1px 2px rgba(20, 24, 43, 0.06), 0 1px 1px rgba(20, 24, 43, 0.04);
+  --shadow-md: 0 8px 24px -8px rgba(20, 24, 43, 0.22), 0 2px 6px rgba(20, 24, 43, 0.08);
+  --shadow-gold: 0 8px 24px -10px rgba(169, 125, 52, 0.35);
+}
+
+/* Signature element: the nib-into-page divider, echoing the Magyna mark.
+   A thin gold line that tapers into a nib point at center. Used between
+   major sections instead of a generic <hr>. */
+.nib-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #E4DCC9 15%, #E4DCC9 85%, transparent);
+  margin: 3rem 0;
+}
+.nib-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 7px;
+  height: 7px;
+  background: #C79A4B;
+}
+
+/* Bookmark-ribbon progress indicator for reading progress on book cards */
+.bookmark-ribbon {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+}
+
+.page-fold {
+  background: linear-gradient(135deg, transparent 50%, #E4DCC9 50%);
+}
+
+/* Card depth: resting shadow-sm, lifts to shadow-md + a hair of upward
+   translate on hover. Used by book/dorama covers instead of a flat
+   Tailwind default. */
+.card-lift {
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 220ms ease, transform 220ms ease;
+}
+.card-lift:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* Primary/secondary buttons: a soft inner highlight on the primary
+   button plus a warm press-down on :active gives real tactility
+   instead of a flat color swap. */
+.btn-primary {
+  @apply rounded-sm bg-ink px-5 py-2.5 text-sm text-paper;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--shadow-sm);
+  transition: box-shadow 180ms ease, transform 120ms ease, background-color 150ms ease;
+}
+.btn-primary:hover {
+  @apply bg-ink-soft;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--shadow-md);
+}
+.btn-primary:active {
+  transform: translateY(1px);
+}
+.btn-secondary {
+  @apply rounded-sm border border-line bg-white/60 px-5 py-2.5 text-sm text-ink;
+  transition: border-color 150ms ease, box-shadow 180ms ease, transform 120ms ease;
+}
+.btn-secondary:hover {
+  @apply border-gold-500;
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+/* Empty states: a soft nib-gradient badge instead of a bare line of
+   gray text — an empty screen should invite an action, not just report
+   an absence. */
+.empty-state {
+  @apply flex flex-col items-center gap-4 rounded-sm border border-dashed border-line px-6 py-16 text-center;
+}
+.empty-state-icon {
+  @apply flex h-12 w-12 items-center justify-center rounded-full bg-nib-gradient text-lg;
+  box-shadow: var(--shadow-gold);
+}
+
+/* Skeleton loading blocks — warm, not the default cool gray pulse. */
+.skeleton {
+  @apply animate-pulse rounded-sm bg-paper-dim;
+}
+
+/* Horizontal-scroll row for home-feed sections (continue reading, new
+   books, popular dorama) — snap-scrolling, thin warm scrollbar. */
+.hscroll {
+  @apply flex gap-4 overflow-x-auto pb-2;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.hscroll > * {
+  scroll-snap-align: start;
+}
+.hscroll::-webkit-scrollbar {
+  height: 6px;
+}
+.hscroll::-webkit-scrollbar-thumb {
+  background: #E4DCC9;
+  border-radius: 3px;
+}
+
+/* Shared form input style — was previously hand-typed inline on every
+   single form across the app; a soft gold glow on focus instead of a
+   bare color swap. */
+.input {
+  @apply w-full rounded-sm border border-line bg-white px-3 py-2 text-ink outline-none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.input:focus {
+  @apply border-gold-500;
+  box-shadow: 0 0 0 3px rgba(199, 154, 75, 0.15);
+}
+.input::placeholder {
+  color: #A79E8C;
+}
+
+/* Dark mode: intentionally scoped to the shell (body background, nav,
+   footer) only. Retrofitting every page's literal Tailwind color
+   utilities for a full dark palette is a much larger pass — this gives
+   the toggle a real, visible effect without pretending the whole app
+   is covered. */
+.dark body {
+  background-color: #14182B;
+  color: #E9E4D8;
+}
+.dark header.sticky {
+  background-color: rgba(20, 24, 43, 0.9);
+  border-color: #343850;
+}
+.dark footer {
+  border-color: #343850;
+  color: #9A93A0;
+}
+
+/* Reading typography for rendered chapter Markdown. Values read from
+   custom properties so ReaderView (font/size/theme settings) can override
+   them on its wrapper — falling back to the original defaults when used
+   standalone (e.g. inside the chapter-editor preview). */
+.prose-kk {
+  font-size: var(--reader-font-size, 1.125rem);
+  line-height: var(--reader-line-height, 1.9);
+  font-family: var(--reader-font-family, inherit);
+  color: var(--reader-fg, #14182B);
+}
+.prose-kk > * + * {
+  margin-top: 1.25em;
+}
+.prose-kk h1,
+.prose-kk h2,
+.prose-kk h3 {
+  font-family: var(--font-display), serif;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-top: 2em;
+  scroll-margin-top: 5rem;
+}
+.prose-kk h1 { font-size: 1.75em; }
+.prose-kk h2 { font-size: 1.4em; }
+.prose-kk h3 { font-size: 1.15em; }
+.prose-kk p:first-of-type::first-letter {
+  font-family: var(--font-display), serif;
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.85;
+  margin: 0.05em 0.08em 0 0;
+  color: var(--reader-accent, #A97D34);
+}
+.prose-kk a {
+  color: var(--reader-accent, #A97D34);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-kk blockquote {
+  border-left: 2px solid var(--reader-accent, #C79A4B);
+  padding-left: 1.25em;
+  font-style: italic;
+  color: var(--reader-muted, #6B6355);
+}
+.prose-kk ul,
+.prose-kk ol {
+  padding-left: 1.5em;
+}
+.prose-kk ul { list-style: disc; }
+.prose-kk ol { list-style: decimal; }
+.prose-kk hr {
+  border: none;
+  border-top: 1px solid var(--reader-border, #E4DCC9);
+  margin: 2.5em auto;
+  width: 40%;
+}
+.prose-kk img {
+  max-width: 100%;
+  border-radius: 2px;
+}
+.prose-kk code {
+  background: var(--reader-code-bg, #F3EEE1);
+  padding: 0.15em 0.4em;
+  border-radius: 2px;
+  font-size: 0.9em;
+}
+.prose-kk table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.prose-kk th,
+.prose-kk td {
+  border: 1px solid var(--reader-border, #E4DCC9);
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
